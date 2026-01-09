@@ -70,7 +70,7 @@ const puppeteer = require('puppeteer');
   await page.waitForTimeout(300);
 
   // Check translation: search placeholder should be Vietnamese
-  const placeholder = await page.$eval('input[placeholder]', el => (el as HTMLInputElement).placeholder);
+  const placeholder = await page.$eval('input[placeholder]', el => (/** @type {HTMLInputElement} */ (el)).placeholder);
   console.log('Search placeholder after VI:', placeholder);
 
   await browser.close();
