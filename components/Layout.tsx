@@ -12,7 +12,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, title, language = 'en'
   return (
     <div className="min-h-screen bg-[#2c1810] pb-12">
       {/* Header */}
-      <header className="py-12 text-center relative overflow-hidden">
+      <header className="py-8 sm:py-12 text-center relative overflow-hidden">
         <div className="absolute inset-0 opacity-20 pointer-events-none">
           <img 
             src="https://www.transparenttextures.com/patterns/dark-leather.png" 
@@ -20,14 +20,14 @@ export const Layout: React.FC<LayoutProps> = ({ children, title, language = 'en'
             className="w-full h-full object-cover"
           />
         </div>
-        <h1 className="text-5xl md:text-7xl font-bold text-[#d4af37] drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] tracking-widest mb-2">
+        <h1 className="text-3xl sm:text-5xl md:text-7xl font-bold text-[#d4af37] drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] tracking-widest mb-2">
           {title}
         </h1>
         <div className="h-1 w-48 bg-gradient-to-r from-transparent via-[#d4af37] to-transparent mx-auto"></div>
         <p className="mt-4 text-[#f4e4bc] italic opacity-80 text-lg">"Where potions meet play."</p>
 
         {/* Language toggle */}
-        <div className="absolute top-6 right-6 flex gap-2">
+        <div className="absolute top-4 right-4 sm:top-6 sm:right-6 flex gap-2">
           <button
             onClick={() => onLanguageChange && onLanguageChange('en')}
             className={`px-2 py-1 rounded text-sm font-bold ${language === 'en' ? 'bg-[#d4af37] text-[#2c1810]' : 'bg-[#2c1810]/10 text-[#f4e4bc]'}`}

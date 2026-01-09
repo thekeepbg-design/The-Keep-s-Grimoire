@@ -80,7 +80,7 @@ const App: React.FC = () => {
 
             <button 
               onClick={() => { setSelectedRecipe(undefined); setView(View.FORM); }}
-              className="bg-[#2c1810] text-[#d4af37] px-8 py-3 rounded-lg font-bold hover:bg-[#3d2b1f] transition-all uppercase tracking-widest shadow-lg border border-[#d4af37]/30"
+              className="bg-[#2c1810] text-[#d4af37] px-6 py-2 sm:px-8 sm:py-3 rounded-lg font-bold hover:bg-[#3d2b1f] transition-all uppercase tracking-widest shadow-lg border border-[#d4af37]/30"
             >
               {t.recordNew}
             </button>
