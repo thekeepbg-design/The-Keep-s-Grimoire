@@ -1,0 +1,8 @@
+
+{
+  "name": "The Alchemist's Grimoire - Board Game Cafe Recipe Manager",
+  "description": "A fantasy-themed recipe management system for a Board Game Cafe, featuring a medieval aesthetic, recipe CRUD operations, search by ingredients, and AI-powered description generation.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
