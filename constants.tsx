@@ -11,6 +11,87 @@ export const CATEGORIES: Category[] = [
   'Mystic Blend'
 ];
 
+export const TRANSLATIONS: Record<string, Record<string, string>> = {
+  en: {
+    all: 'All',
+    searchPlaceholder: 'Search by name or reagent...',
+    recordNew: '+ Record New Entry',
+    noResults: 'No such lore exists in these scrolls...',
+    resetSearch: 'Reset Archive Search',
+
+    // RecipeForm
+    formNewTitle: 'Record New Concoction',
+    formEditTitle: 'Edit Grimoire Entry',
+    labelName: 'Concoction Name',
+    labelCategory: 'Category',
+    labelDescription: 'Lore & Description',
+    aiButton: 'Consult Alchemist AI ✨',
+    aiBusy: 'Consulting the Spirits...',
+    labelImage: 'Image URL (Web or Google Drive)',
+    addIngredient: '+ Add another reagent',
+    addStep: '+ Add another ritual step',
+    labelNotes: "Secret Notes",
+    withdraw: 'Withdraw',
+    submit: 'Scribe into Grimoire',
+    customCategoryPlaceholder: 'Type a custom category',
+
+    // RecipeCard / Detail
+    examine: 'Examine →',
+    idLabel: 'ID:',
+    returnButton: 'Return to Archive',
+    reagents: 'Reagents Needed',
+    amend: 'Amend entry',
+    banish: 'Banish',
+    ritualTitle: 'The Brewing Ritual',
+    postscript: "Scribe's Postscript",
+    entryCreated: 'Entry created',
+    archivalCode: 'Archival Code',
+
+    // Layout
+    lang_en: 'EN',
+    lang_vi: 'VI'
+  },
+  vi: {
+    all: 'Tất cả',
+    searchPlaceholder: 'Tìm theo tên hoặc thành phần...',
+    recordNew: '+ Ghi Lại Món Mới',
+    noResults: 'Không có ghi chép phù hợp...',
+    resetSearch: 'Đặt lại tìm kiếm',
+
+    // RecipeForm
+    formNewTitle: 'Ghi Lại Pha Chế Mới',
+    formEditTitle: 'Chỉnh Sửa Ghi Chép',
+    labelName: 'Tên Pha Chế',
+    labelCategory: 'Thể Loại',
+    labelDescription: 'Câu Chuyện & Mô Tả',
+    aiButton: 'Gọi Trợ Lý Hóa Thuật ✨',
+    aiBusy: 'Đang kết nối các linh hồn...',
+    labelImage: 'URL Ảnh (Web hoặc Google Drive)',
+    addIngredient: '+ Thêm nguyên liệu',
+    addStep: '+ Thêm bước nghi thức',
+    labelNotes: 'Ghi chú bí mật',
+    withdraw: 'Hủy',
+    submit: 'Ghi vào Grimoire',
+    customCategoryPlaceholder: 'Nhập thể loại tuỳ chỉnh',
+
+    // RecipeCard / Detail
+    examine: 'Xem →',
+    idLabel: 'Mã:',
+    returnButton: 'Quay lại Kho Lưu Trữ',
+    reagents: 'Nguyên Liệu Cần Thiết',
+    amend: 'Sửa ghi chép',
+    banish: 'Xoá',
+    ritualTitle: 'Nghi Thức Pha Chế',
+    postscript: 'Ghi chú người ghi',
+    entryCreated: 'Ngày tạo',
+    archivalCode: 'Mã lưu trữ',
+
+    // Layout
+    lang_en: 'EN',
+    lang_vi: 'VI'
+  }
+};
+
 export const THEME_COLORS = {
   BROWN_DARK: '#2c1810',
   BROWN_MEDIUM: '#3d2b1f',

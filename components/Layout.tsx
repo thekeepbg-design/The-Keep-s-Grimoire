@@ -4,9 +4,11 @@ import React from 'react';
 interface LayoutProps {
   children: React.ReactNode;
   title: string;
+  language?: string;
+  onLanguageChange?: (lang: string) => void;
 }
 
-export const Layout: React.FC<LayoutProps> = ({ children, title }) => {
+export const Layout: React.FC<LayoutProps> = ({ children, title, language = 'en', onLanguageChange }) => {
   return (
     <div className="min-h-screen bg-[#2c1810] pb-12">
       {/* Header */}
@@ -23,6 +25,22 @@ export const Layout: React.FC<LayoutProps> = ({ children, title }) => {
         </h1>
         <div className="h-1 w-48 bg-gradient-to-r from-transparent via-[#d4af37] to-transparent mx-auto"></div>
         <p className="mt-4 text-[#f4e4bc] italic opacity-80 text-lg">"Where potions meet play."</p>
+
+        {/* Language toggle */}
+        <div className="absolute top-6 right-6 flex gap-2">
+          <button
+            onClick={() => onLanguageChange && onLanguageChange('en')}
+            className={`px-2 py-1 rounded text-sm font-bold ${language === 'en' ? 'bg-[#d4af37] text-[#2c1810]' : 'bg-[#2c1810]/10 text-[#f4e4bc]'}`}
+          >
+            EN
+          </button>
+          <button
+            onClick={() => onLanguageChange && onLanguageChange('vi')}
+            className={`px-2 py-1 rounded text-sm font-bold ${language === 'vi' ? 'bg-[#d4af37] text-[#2c1810]' : 'bg-[#2c1810]/10 text-[#f4e4bc]'}`}
+          >
+            VI
+          </button>
+        </div>
       </header>
 
       {/* Main Content */}

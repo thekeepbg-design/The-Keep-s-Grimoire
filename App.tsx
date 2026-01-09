@@ -13,6 +13,7 @@ const App: React.FC = () => {
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | undefined>();
   const [searchTerm, setSearchTerm] = useState('');
   const [activeCategory, setActiveCategory] = useState<string>('All');
+  const [language, setLanguage] = useState<string>('en');
 
   useEffect(() => {
     setRecipes(recipeService.getRecipes());
@@ -42,9 +43,10 @@ const App: React.FC = () => {
   };
 
   const categories = ['All', ...new Set(recipes.map(r => r.category))];
+  const t = require('./constants').TRANSLATIONS[language] || require('./constants').TRANSLATIONS.en;
 
   return (
-    <Layout title="The Alchemist's Grimoire">
+    <Layout title="The Alchemist's Grimoire" language={language} onLanguageChange={setLanguage}>
       {view === View.LIST && (
         <div className="space-y-12">
           {/* Controls */}
@@ -52,7 +54,7 @@ const App: React.FC = () => {
             <div className="relative w-full md:w-1/3">
               <input 
                 type="text" 
-                placeholder="Search by name or reagent..."
+                placeholder={t.searchPlaceholder}
                 className="w-full bg-white/50 border-2 border-[#8b6b10]/40 p-3 pl-12 rounded focus:border-[#d4af37] outline-none fantasy-font"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -71,7 +73,7 @@ const App: React.FC = () => {
                     : 'bg-[#2c1810]/10 text-[#8b6b10] hover:bg-[#2c1810]/20'
                   }`}
                 >
-                  {cat}
+                  {cat === 'All' ? t.all : cat}
                 </button>
               ))}
             </div>
@@ -80,7 +82,7 @@ const App: React.FC = () => {
               onClick={() => { setSelectedRecipe(undefined); setView(View.FORM); }}
               className="bg-[#2c1810] text-[#d4af37] px-8 py-3 rounded-lg font-bold hover:bg-[#3d2b1f] transition-all uppercase tracking-widest shadow-lg border border-[#d4af37]/30"
             >
-              + Record New Entry
+              {t.recordNew}
             </button>
           </div>
 
@@ -96,17 +98,18 @@ const App: React.FC = () => {
                     setSelectedRecipe(r);
                     setView(View.DETAIL);
                   }}
+                  language={language}
                 />
               ))}
             </div>
           ) : (
             <div className="text-center py-20 bg-[#f4e4bc]/50 rounded-xl border-2 border-dashed border-[#d4af37]/30">
-              <p className="text-2xl italic text-[#3d2b1f]/60 font-serif">No such lore exists in these scrolls...</p>
+              <p className="text-2xl italic text-[#3d2b1f]/60 font-serif">{t.noResults}</p>
               <button 
                 onClick={() => { setSearchTerm(''); setActiveCategory('All'); }}
                 className="mt-4 text-[#8b6b10] font-bold underline"
               >
-                Reset Archive Search
+                {t.resetSearch}
               </button>
             </div>
           )}
@@ -119,6 +122,7 @@ const App: React.FC = () => {
           onBack={() => setView(View.LIST)}
           onEdit={() => setView(View.FORM)}
           onDelete={handleDeleteRecipe}
+          language={language}
         />
       )}
 
@@ -130,6 +134,7 @@ const App: React.FC = () => {
             if (selectedRecipe) setView(View.DETAIL);
             else setView(View.LIST);
           }}
+          language={language}
         />
       )}
     </Layout>

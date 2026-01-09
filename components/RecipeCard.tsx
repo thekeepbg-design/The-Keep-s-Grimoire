@@ -7,7 +7,8 @@ interface RecipeCardProps {
   onClick: (id: string) => void;
 }
 
-export const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onClick }) => {
+export const RecipeCard: React.FC<RecipeCardProps & { language?: string }> = ({ recipe, onClick, language = 'en' }) => {
+  const t = require('../constants').TRANSLATIONS[language] || require('../constants').TRANSLATIONS.en;
   return (
     <div 
       onClick={() => onClick(recipe.id)}
@@ -29,9 +30,9 @@ export const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onClick }) => {
           {recipe.description}
         </p>
         <div className="mt-4 flex justify-between items-center">
-          <span className="text-xs text-[#3d2b1f]/60 font-mono">ID: {recipe.id.slice(0, 5)}</span>
+          <span className="text-xs text-[#3d2b1f]/60 font-mono">{t.idLabel} {recipe.id.slice(0, 5)}</span>
           <button className="text-[#8b6b10] hover:text-[#d4af37] font-bold text-sm uppercase tracking-wider">
-            Examine →
+            {t.examine}
           </button>
         </div>
       </div>

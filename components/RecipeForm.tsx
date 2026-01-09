@@ -8,9 +8,11 @@ interface RecipeFormProps {
   recipe?: Recipe;
   onSave: (recipe: Recipe) => void;
   onCancel: () => void;
+  language?: string;
 }
 
-export const RecipeForm: React.FC<RecipeFormProps> = ({ recipe, onSave, onCancel }) => {
+export const RecipeForm: React.FC<RecipeFormProps> = ({ recipe, onSave, onCancel, language = 'en' }) => {
+  const t = require('../constants').TRANSLATIONS[language] || require('../constants').TRANSLATIONS.en;
   const [formData, setFormData] = useState<Omit<Recipe, 'id' | 'createdAt'>>({
     name: '',
     category: 'Potion',
@@ -21,18 +23,21 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ recipe, onSave, onCancel
     notes: ''
   });
   const [isEnhancing, setIsEnhancing] = useState(false);
+  const [customCategory, setCustomCategory] = useState('');
 
   useEffect(() => {
     if (recipe) {
+      const isKnown = CATEGORIES.includes(recipe.category as any);
       setFormData({
         name: recipe.name,
-        category: recipe.category,
+        category: isKnown ? recipe.category : 'Custom',
         description: recipe.description,
         imageUrl: recipe.imageUrl,
         ingredients: [...recipe.ingredients],
         steps: [...recipe.steps],
         notes: recipe.notes
       });
+      if (!isKnown) setCustomCategory(recipe.category);
     }
   }, [recipe]);
 
@@ -80,8 +85,10 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ recipe, onSave, onCancel
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const finalCategory = formData.category === 'Custom' ? (customCategory.trim() || 'Uncategorized') : formData.category;
     const finalRecipe: Recipe = {
       ...formData,
+      category: finalCategory as any,
       id: recipe?.id || Math.random().toString(36).substr(2, 9),
       createdAt: recipe?.createdAt || Date.now()
     };
@@ -104,13 +111,13 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ recipe, onSave, onCancel
   return (
     <div className="max-w-4xl mx-auto parchment-bg p-8 medieval-border scroll-shadow relative">
       <h2 className="text-3xl font-bold mb-8 text-[#2c1810] border-b-2 border-[#d4af37] pb-2 uppercase tracking-widest">
-        {recipe ? 'Edit Grimoire Entry' : 'Record New Concoction'}
+        {recipe ? t.formEditTitle : t.formNewTitle}
       </h2>
       
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
-            <label className="block fantasy-font font-bold text-[#3d2b1f]">Concoction Name</label>
+            <label className="block fantasy-font font-bold text-[#3d2b1f]">{t.labelName}</label>
             <input 
               name="name"
               value={formData.name}
@@ -122,7 +129,7 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ recipe, onSave, onCancel
           </div>
           
           <div className="space-y-2">
-            <label className="block fantasy-font font-bold text-[#3d2b1f]">Category</label>
+            <label className="block fantasy-font font-bold text-[#3d2b1f]">{t.labelCategory}</label>
             <select 
               name="category"
               value={formData.category}
@@ -130,20 +137,30 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ recipe, onSave, onCancel
               className="w-full bg-white/50 border-2 border-[#8b6b10]/30 p-2 focus:border-[#d4af37] outline-none rounded"
             >
               {CATEGORIES.map(cat => <option key={cat} value={cat}>{cat}</option>)}
+              <option value="Custom">Other</option>
             </select>
+
+            {formData.category === 'Custom' && (
+              <input
+                value={customCategory}
+                onChange={(e) => setCustomCategory(e.target.value)}
+                placeholder={t.customCategoryPlaceholder}
+                className="w-full mt-2 bg-white/50 border-2 border-[#8b6b10]/30 p-2 rounded"
+              />
+            )}
           </div>
         </div>
 
         <div className="space-y-2">
           <div className="flex justify-between items-center">
-            <label className="block fantasy-font font-bold text-[#3d2b1f]">Lore & Description</label>
+            <label className="block fantasy-font font-bold text-[#3d2b1f]">{t.labelDescription}</label>
             <button 
               type="button"
               onClick={handleAIEnhance}
               disabled={isEnhancing}
               className="text-xs bg-[#d4af37] hover:bg-[#8b6b10] text-[#2c1810] px-3 py-1 rounded font-bold uppercase disabled:opacity-50"
             >
-              {isEnhancing ? 'Consulting the Spirits...' : 'Consult Alchemist AI ✨'}
+              {isEnhancing ? t.aiBusy : t.aiButton}
             </button>
           </div>
           <textarea 
@@ -157,7 +174,7 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ recipe, onSave, onCancel
         </div>
 
         <div className="space-y-2">
-          <label className="block fantasy-font font-bold text-[#3d2b1f]">Image URL (Web or Google Drive)</label>
+          <label className="block fantasy-font font-bold text-[#3d2b1f]">{t.labelImage}</label>
           <input 
             value={formData.imageUrl}
             onChange={handleImageUrlChange}
@@ -172,7 +189,7 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ recipe, onSave, onCancel
         </div>
 
         <div className="space-y-4">
-          <label className="block fantasy-font font-bold text-[#3d2b1f] border-b border-[#3d2b1f]/20">Ingredients</label>
+          <label className="block fantasy-font font-bold text-[#3d2b1f] border-b border-[#3d2b1f]/20">{t.reagents}</label>
           {formData.ingredients.map((ing, idx) => (
             <div key={idx} className="flex gap-2 items-center">
               <input 
@@ -198,7 +215,7 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ recipe, onSave, onCancel
             type="button" 
             onClick={addIngredient}
             className="text-sm font-bold text-[#8b6b10] hover:underline"
-          >+ Add another reagent</button>
+          >{t.addIngredient}</button>
         </div>
 
         <div className="space-y-4">
@@ -224,11 +241,11 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ recipe, onSave, onCancel
             type="button" 
             onClick={addStep}
             className="text-sm font-bold text-[#8b6b10] hover:underline"
-          >+ Add another ritual step</button>
+          >{t.addStep}</button>
         </div>
 
         <div className="space-y-2">
-          <label className="block fantasy-font font-bold text-[#3d2b1f]">Secret Notes</label>
+          <label className="block fantasy-font font-bold text-[#3d2b1f]">{t.labelNotes}</label>
           <textarea 
             name="notes"
             value={formData.notes}
@@ -240,18 +257,18 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ recipe, onSave, onCancel
         </div>
 
         <div className="flex justify-end gap-4 pt-4 border-t border-[#d4af37]/30">
-          <button 
+            <button 
             type="button" 
             onClick={onCancel}
             className="px-6 py-2 border-2 border-[#8b6b10] text-[#8b6b10] font-bold rounded hover:bg-[#8b6b10]/10 transition-colors uppercase tracking-widest text-sm"
           >
-            Withdraw
+            {t.withdraw}
           </button>
           <button 
             type="submit"
             className="px-10 py-2 bg-[#d4af37] text-[#2c1810] font-bold rounded hover:bg-[#8b6b10] transition-all shadow-lg uppercase tracking-widest text-sm"
           >
-            Scribe into Grimoire
+            {t.submit}
           </button>
         </div>
       </form>

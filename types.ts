@@ -4,7 +4,7 @@ export interface Ingredient {
   amount: string;
 }
 
-export type Category = 'Potion' | 'Elixir' | 'Brew' | 'Tincture' | 'Nectar' | 'Mystic Blend';
+export type Category = string;
 
 export interface Recipe {
   id: string;
