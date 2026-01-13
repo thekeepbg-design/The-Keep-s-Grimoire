@@ -3,12 +3,12 @@ import React from 'react';
 import { Category } from './types';
 
 export const CATEGORIES: Category[] = [
-  'Potion',
-  'Elixir',
-  'Brew',
-  'Tincture',
-  'Nectar',
-  'Dragon`s Breath'
+  "Potion",
+  "Elixir",
+  "Brew",
+  "Enhanced Potion",
+  "Dragon's Breath",
+  "Nectar"
 ];
 
 export const THEME_COLORS = {
