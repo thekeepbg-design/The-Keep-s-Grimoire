@@ -8,7 +8,7 @@ export const CATEGORIES: Category[] = [
   'Brew',
   'Tincture',
   'Nectar',
-  'Mystic Blend'
+  'Dragon`s Breath'
 ];
 
 export const THEME_COLORS = {
