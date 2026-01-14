@@ -17,7 +17,19 @@ const App: React.FC = () => {
   const { t } = useI18n();
 
   useEffect(() => {
-    setRecipes(recipeService.getRecipes());
+    // Initialize recipes with cloud sync
+    recipeService.initialize().then(initialRecipes => {
+      setRecipes(initialRecipes);
+    });
+
+    // Set up real-time listener for recipe changes from other devices/tabs
+    const unsubscribe = recipeService.onRecipesChanged((updatedRecipes) => {
+      setRecipes(updatedRecipes);
+    });
+
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   const filteredRecipes = useMemo(() => {
@@ -32,14 +44,14 @@ const App: React.FC = () => {
 
   const handleSaveRecipe = (recipe: Recipe) => {
     recipeService.saveRecipe(recipe);
-    setRecipes(recipeService.getRecipes());
+    // Recipes will be updated via listener
     setSelectedRecipe(recipe);
     setView(View.DETAIL);
   };
 
   const handleDeleteRecipe = (id: string) => {
     recipeService.deleteRecipe(id);
-    setRecipes(recipeService.getRecipes());
+    // Recipes will be updated via listener
     setView(View.LIST);
   };
 
