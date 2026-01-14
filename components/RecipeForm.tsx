@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Recipe, Category, Ingredient } from '../types';
 import { CATEGORIES } from '../constants';
 import { enhanceDescription } from '../services/geminiService';
+import { useI18n } from '../i18n';
 
 interface RecipeFormProps {
   recipe?: Recipe;
@@ -11,6 +12,7 @@ interface RecipeFormProps {
 }
 
 export const RecipeForm: React.FC<RecipeFormProps> = ({ recipe, onSave, onCancel }) => {
+  const { t } = useI18n();
   const [formData, setFormData] = useState<Omit<Recipe, 'id' | 'createdAt'>>({
     name: '',
     category: 'Potion',
@@ -104,13 +106,13 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ recipe, onSave, onCancel
   return (
     <div className="max-w-4xl mx-auto parchment-bg p-8 medieval-border scroll-shadow relative">
       <h2 className="text-3xl font-bold mb-8 text-[#2c1810] border-b-2 border-[#d4af37] pb-2 uppercase tracking-widest">
-        {recipe ? 'Edit Grimoire Entry' : 'Record New Concoction'}
+        {recipe ? t('edit') : 'Record New Concoction'}
       </h2>
       
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
-            <label className="block fantasy-font font-bold text-[#3d2b1f]">Concoction Name</label>
+            <label className="block font-bold text-[#3d2b1f]">{t('recipeName')}</label>
             <input 
               name="name"
               value={formData.name}
@@ -122,7 +124,7 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ recipe, onSave, onCancel
           </div>
           
           <div className="space-y-2">
-            <label className="block fantasy-font font-bold text-[#3d2b1f]">Category</label>
+            <label className="block font-bold text-[#3d2b1f]">{t('category')}</label>
             <select 
               name="category"
               value={formData.category}
@@ -136,7 +138,7 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ recipe, onSave, onCancel
 
         <div className="space-y-2">
           <div className="flex justify-between items-center">
-            <label className="block fantasy-font font-bold text-[#3d2b1f]">Lore & Description</label>
+            <label className="block font-bold text-[#3d2b1f]">{t('description')}</label>
             <button 
               type="button"
               onClick={handleAIEnhance}
@@ -157,7 +159,7 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ recipe, onSave, onCancel
         </div>
 
         <div className="space-y-2">
-          <label className="block fantasy-font font-bold text-[#3d2b1f]">Image URL (Web or Google Drive)</label>
+          <label className="block font-bold text-[#3d2b1f]">Image URL (Web or Google Drive)</label>
           <input 
             value={formData.imageUrl}
             onChange={handleImageUrlChange}
@@ -172,19 +174,19 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ recipe, onSave, onCancel
         </div>
 
         <div className="space-y-4">
-          <label className="block fantasy-font font-bold text-[#3d2b1f] border-b border-[#3d2b1f]/20">Ingredients</label>
+          <label className="block font-bold text-[#3d2b1f] border-b border-[#3d2b1f]/20">{t('ingredients')}</label>
           {formData.ingredients.map((ing, idx) => (
             <div key={idx} className="flex gap-2 items-center">
               <input 
                 value={ing.name}
                 onChange={(e) => handleIngredientChange(idx, 'name', e.target.value)}
-                placeholder="Ingredient"
+                placeholder={t('recipeName') as string}
                 className="flex-grow bg-white/50 border border-[#8b6b10]/30 p-1.5 rounded"
               />
               <input 
                 value={ing.amount}
                 onChange={(e) => handleIngredientChange(idx, 'amount', e.target.value)}
-                placeholder="Quantity"
+                placeholder={t('amount') as string}
                 className="w-32 bg-white/50 border border-[#8b6b10]/30 p-1.5 rounded"
               />
               <button 
@@ -202,7 +204,7 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ recipe, onSave, onCancel
         </div>
 
         <div className="space-y-4">
-          <label className="block fantasy-font font-bold text-[#3d2b1f] border-b border-[#3d2b1f]/20">Incantations (Steps)</label>
+          <label className="block font-bold text-[#3d2b1f] border-b border-[#3d2b1f]/20">{t('steps')}</label>
           {formData.steps.map((step, idx) => (
             <div key={idx} className="flex gap-2 items-start">
               <span className="mt-2 font-bold opacity-50">{idx + 1}.</span>
@@ -228,7 +230,7 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ recipe, onSave, onCancel
         </div>
 
         <div className="space-y-2">
-          <label className="block fantasy-font font-bold text-[#3d2b1f]">Secret Notes</label>
+          <label className="block font-bold text-[#3d2b1f]">{t('notes')}</label>
           <textarea 
             name="notes"
             value={formData.notes}
@@ -245,13 +247,13 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({ recipe, onSave, onCancel
             onClick={onCancel}
             className="px-6 py-2 border-2 border-[#8b6b10] text-[#8b6b10] font-bold rounded hover:bg-[#8b6b10]/10 transition-colors uppercase tracking-widest text-sm"
           >
-            Withdraw
+            {t('cancel')}
           </button>
           <button 
             type="submit"
             className="px-10 py-2 bg-[#d4af37] text-[#2c1810] font-bold rounded hover:bg-[#8b6b10] transition-all shadow-lg uppercase tracking-widest text-sm"
           >
-            Scribe into Grimoire
+            {t('save')}
           </button>
         </div>
       </form>

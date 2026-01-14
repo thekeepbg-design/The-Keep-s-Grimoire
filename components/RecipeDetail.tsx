@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Recipe } from '../types';
+import { useI18n } from '../i18n';
 
 interface RecipeDetailProps {
   recipe: Recipe;
@@ -10,6 +11,8 @@ interface RecipeDetailProps {
 }
 
 export const RecipeDetail: React.FC<RecipeDetailProps> = ({ recipe, onEdit, onDelete, onBack }) => {
+  const { t } = useI18n();
+
   return (
     <div className="max-w-5xl mx-auto parchment-bg medieval-border scroll-shadow relative overflow-hidden flex flex-col md:flex-row">
       {/* Decorative background image */}
@@ -36,7 +39,7 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({ recipe, onEdit, onDe
 
         <div className="space-y-6">
           <div className="bg-[#2c1810]/10 p-4 rounded border-l-4 border-[#d4af37]">
-            <h4 className="fantasy-font text-lg font-bold text-[#8b6b10] mb-3 border-b border-[#8b6b10]/20 pb-1 uppercase tracking-tight">Reagents Needed</h4>
+            <h4 className="text-lg font-bold text-[#8b6b10] mb-3 border-b border-[#8b6b10]/20 pb-1 uppercase tracking-tight">{t('ingredients')}</h4>
             <ul className="space-y-2">
               {recipe.ingredients.map((ing, i) => (
                 <li key={i} className="flex justify-between text-sm italic">
@@ -52,13 +55,13 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({ recipe, onEdit, onDe
               onClick={() => onEdit(recipe)}
               className="flex-grow py-2 bg-[#d4af37]/80 hover:bg-[#d4af37] text-[#2c1810] font-bold rounded uppercase text-xs tracking-widest transition-colors"
             >
-              Amend entry
+              {t('edit')}
             </button>
             <button 
               onClick={() => { if(confirm("Erase this knowledge forever?")) onDelete(recipe.id); }}
               className="px-4 py-2 border border-red-800 text-red-800 hover:bg-red-50 rounded uppercase text-xs font-bold transition-colors"
             >
-              Banish
+              {t('delete')}
             </button>
           </div>
         </div>
@@ -67,7 +70,7 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({ recipe, onEdit, onDe
       {/* Main Content Section */}
       <div className="md:w-3/5 p-8 md:p-12 z-10">
         <div className="mb-8">
-          <span className="text-xs font-bold bg-[#8b6b10] text-[#f4e4bc] px-3 py-1 rounded-full fantasy-font mb-4 inline-block uppercase tracking-widest">
+          <span className="text-xs font-bold bg-[#8b6b10] text-[#f4e4bc] px-3 py-1 rounded-full mb-4 inline-block uppercase tracking-widest">
             {recipe.category}
           </span>
           <h2 className="text-5xl font-bold text-[#2c1810] mb-4 drop-shadow-sm leading-tight">
@@ -80,7 +83,7 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({ recipe, onEdit, onDe
 
         <div className="space-y-8">
           <div>
-            <h3 className="fantasy-font text-2xl font-bold text-[#8b6b10] mb-4 flex items-center gap-3">
+            <h3 className="text-2xl font-bold text-[#8b6b10] mb-4 flex items-center gap-3">
               <span className="w-8 h-[2px] bg-[#d4af37]"></span> The Brewing Ritual
             </h3>
             <ol className="space-y-6">
@@ -98,7 +101,7 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({ recipe, onEdit, onDe
           {recipe.notes && (
             <div className="bg-[#fcf7e6] p-6 border-2 border-dashed border-[#d4af37]/50 rounded-lg relative mt-12">
               <div className="absolute -top-3 left-6 bg-[#fcf7e6] px-2 text-xs font-bold text-[#8b6b10] uppercase tracking-[0.2em]">
-                Scribe's Postscript
+                {t('notes')}
               </div>
               <p className="italic text-base text-[#3d2b1f]/80 leading-relaxed">
                 {recipe.notes}

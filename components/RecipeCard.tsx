@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Recipe } from '../types';
+import { useI18n } from '../i18n';
 
 interface RecipeCardProps {
   recipe: Recipe;
@@ -8,6 +9,8 @@ interface RecipeCardProps {
 }
 
 export const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onClick }) => {
+  const { t } = useI18n();
+
   return (
     <div 
       onClick={() => onClick(recipe.id)}
@@ -19,7 +22,7 @@ export const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onClick }) => {
           alt={recipe.name} 
           className="w-full h-full object-cover filter sepia-[0.3] group-hover:sepia-0 transition-all duration-500"
         />
-        <div className="absolute top-2 right-2 bg-[#2c1810]/80 text-[#d4af37] px-3 py-1 text-xs rounded border border-[#d4af37]/50 font-bold fantasy-font uppercase">
+        <div className="absolute top-2 right-2 bg-[#2c1810]/80 text-[#d4af37] px-3 py-1 text-xs rounded border border-[#d4af37]/50 font-bold uppercase">
           {recipe.category}
         </div>
       </div>
@@ -29,9 +32,9 @@ export const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onClick }) => {
           {recipe.description}
         </p>
         <div className="mt-4 flex justify-between items-center">
-          <span className="text-xs text-[#3d2b1f]/60 font-mono">ID: {recipe.id.slice(0, 5)}</span>
+          <span className="text-xs text-[#3d2b1f]/60 font-mono">{t('id')}: {recipe.id.slice(0, 5)}</span>
           <button className="text-[#8b6b10] hover:text-[#d4af37] font-bold text-sm uppercase tracking-wider">
-            Examine →
+            {t('examine')}
           </button>
         </div>
       </div>

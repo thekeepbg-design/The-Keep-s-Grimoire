@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useI18n } from '../i18n';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -7,10 +8,22 @@ interface LayoutProps {
 }
 
 export const Layout: React.FC<LayoutProps> = ({ children, title }) => {
+  const { language, setLanguage } = useI18n();
+
   return (
     <div className="min-h-screen bg-[#2c1810] pb-12">
       {/* Header */}
       <header className="py-12 text-center relative overflow-hidden">
+        {/* Language Switch Button */}
+        <div className="absolute top-6 right-6 z-10">
+          <button
+            onClick={() => setLanguage(language === 'en' ? 'vi' : 'en')}
+            className="bg-[#2c1810] text-[#d4af37] px-4 py-2 rounded-lg font-bold hover:bg-[#3d2b1f] transition-all uppercase tracking-widest border border-[#d4af37]/50 text-sm"
+          >
+            {language === 'en' ? 'Tiếng Việt' : 'English'}
+          </button>
+        </div>
+
         <div className="absolute inset-0 opacity-20 pointer-events-none">
           <img 
             src="https://www.transparenttextures.com/patterns/dark-leather.png" 
