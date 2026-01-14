@@ -122,44 +122,48 @@ export const recipeService = {
   },
 
   // Sync recipes to cloud
-  syncToCloud: async (): Promise<boolean> => {
-    try {
-      const recipes = recipeService.getRecipes();
-      const pendingChanges = recipeService.getPendingChanges();
-      
-      // For now, simulate cloud sync - replace with actual backend
-      const syncData = {
-        recipes,
-        pendingChanges,
-        deviceId: localStorage.getItem('grimoire_device_id') || recipeService.generateDeviceId(),
-        timestamp: Date.now()
-      };
+  syncToCloud: (): Promise<boolean> => {
+    return (async () => {
+      try {
+        const recipes = recipeService.getRecipes();
+        const pendingChanges = recipeService.getPendingChanges();
+        
+        // For now, simulate cloud sync - replace with actual backend
+        const syncData = {
+          recipes,
+          pendingChanges,
+          deviceId: localStorage.getItem('grimoire_device_id') || recipeService.generateDeviceId(),
+          timestamp: Date.now()
+        };
 
-      // Store sync timestamp
-      localStorage.setItem(SYNC_TIMESTAMP_KEY, JSON.stringify(Date.now()));
-      
-      // Clear pending changes on successful "sync"
-      recipeService.clearPendingChanges();
-      
-      // Log for debugging
-      console.log('Recipes synced to cloud:', syncData);
-      return true;
-    } catch (error) {
-      console.error('Failed to sync recipes:', error);
-      return false;
-    }
+        // Store sync timestamp
+        localStorage.setItem(SYNC_TIMESTAMP_KEY, JSON.stringify(Date.now()));
+        
+        // Clear pending changes on successful "sync"
+        recipeService.clearPendingChanges();
+        
+        // Log for debugging
+        console.log('Recipes synced to cloud:', syncData);
+        return true;
+      } catch (error) {
+        console.error('Failed to sync recipes:', error);
+        return false;
+      }
+    })();
   },
 
   // Sync recipes from cloud
-  syncFromCloud: async (): Promise<Recipe[]> => {
-    try {
-      // For now, this returns local recipes
-      // In production, fetch from backend and merge
-      return recipeService.getRecipes();
-    } catch (error) {
-      console.error('Failed to sync from cloud:', error);
-      return recipeService.getRecipes();
-    }
+  syncFromCloud: (): Promise<Recipe[]> => {
+    return (async () => {
+      try {
+        // For now, this returns local recipes
+        // In production, fetch from backend and merge
+        return recipeService.getRecipes();
+      } catch (error) {
+        console.error('Failed to sync from cloud:', error);
+        return recipeService.getRecipes();
+      }
+    })();
   },
 
   // Generate unique device ID
@@ -177,23 +181,25 @@ export const recipeService = {
   },
 
   // Initialize recipe service with sync
-  async initialize(): Promise<Recipe[]> => {
-    // Generate device ID if not exists
-    recipeService.getDeviceId();
-    
-    // Try to sync from cloud
-    const cloudRecipes = await recipeService.syncFromCloud();
-    
-    // Merge with local recipes
-    const localRecipes = recipeService.getRecipes();
-    const merged = recipeService.mergeRecipes(localRecipes, cloudRecipes);
-    
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
-    
-    // Sync pending changes
-    await recipeService.syncToCloud();
-    
-    return merged;
+  initialize: (): Promise<Recipe[]> => {
+    return (async () => {
+      // Generate device ID if not exists
+      recipeService.getDeviceId();
+      
+      // Try to sync from cloud
+      const cloudRecipes = await recipeService.syncFromCloud();
+      
+      // Merge with local recipes
+      const localRecipes = recipeService.getRecipes();
+      const merged = recipeService.mergeRecipes(localRecipes, cloudRecipes);
+      
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+      
+      // Sync pending changes
+      await recipeService.syncToCloud();
+      
+      return merged;
+    })();
   },
 
   // Merge recipes from multiple sources (local + cloud)
